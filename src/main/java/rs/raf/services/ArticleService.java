@@ -3,7 +3,6 @@ package rs.raf.services;
 
 import rs.raf.models.Article;
 import rs.raf.repositories.IRepos.ArticleRepository;
-import rs.raf.repositories.SQLRepos.SqlArticleRepository;
 
 import javax.inject.Inject;
 import java.util.List;
@@ -13,43 +12,47 @@ public class ArticleService {
     @Inject
     private ArticleRepository articleRepository;
 
-    public Article addArticle(Article article, String[] tags) {
-        return articleRepository.addArticle(article, tags);
+    public Article addArticle(Article article) {
+        return articleRepository.addArticle(article);
     }
 
-    public Article getSingleArticle(Integer id) {
-        return articleRepository.getSingleArticle(id);
+    public List<Article> allArticles(){
+        return articleRepository.allArticles();
     }
 
-    public boolean deleteArticle(Integer id) {
-        return articleRepository.deleteArticle(id);
+    public Article findArticle(Integer id) {
+        return articleRepository.findArticle(id);
     }
 
-    public Article editArticle(Article article, String[] tags) {
-        return articleRepository.editArticle(article, tags);
+    public void deleteArticle(Integer id) {
+         articleRepository.deleteArticle(id);
     }
 
-    public List<Article> getArticlesPage(Integer page) {
-        return articleRepository.getArticlesPage(page);
+    public Article editArticle(Article article) {
+        return articleRepository.editArticle(article);
     }
 
-    public Integer getCount(Integer catId, Integer tagId) {
+    public List<Article> findArticlesPage(Integer page) {
+        return articleRepository.findArticlesPage(page);
+    }
+
+    public Integer findCount(Integer catId, Integer tagId) {
         return articleRepository.countArticles(catId, tagId);
     }
 
-    public List<Article> getArticlesByCategoryPage(Integer catId, Integer page) {
-        return articleRepository.getArticlesByCategoryPage(catId, page);
+    public List<Article> findArticlesByCategory(Integer catId) {
+        return articleRepository.findArticlesByCategory(catId);
     }
 
-    public List<Article> getArticlesByTagPage(Integer tagId, Integer page) {
-        return articleRepository.getArticlesByTagPage(tagId, page);
+    public List<Article> findArticlesByTag(Integer tagId) {
+        return articleRepository.findArticlesByTag(tagId);
     }
 
-    public List<Article> getMostRecentArticles() {
-        return articleRepository.getMostRecentArticles();
+    public List<Article> findMostRecentArticles() {
+        return articleRepository.findMostRecentArticles();
     }
 
-    public List<Article> getMostReadArticlesMonthly() {
-        return articleRepository.getMostReadMonthlyArticles();
+    public List<Article> findMostReadArticlesMonthly() {
+        return articleRepository.findMostReadMonthlyArticles();
     }
 }

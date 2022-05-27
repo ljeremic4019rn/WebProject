@@ -3,7 +3,6 @@ package rs.raf.services;
 
 import rs.raf.models.User;
 import rs.raf.repositories.IRepos.UserRepository;
-import rs.raf.repositories.SQLRepos.SqlUserRepository;
 
 import javax.inject.Inject;
 import java.util.List;
@@ -26,7 +25,7 @@ public class UserService {
     }
 
     public List<User> allUsers() {
-        return userRepository.listAllUsers();
+        return userRepository.allUsers();
     }
 
     public User editUser(User user) {

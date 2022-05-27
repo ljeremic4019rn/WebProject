@@ -9,5 +9,5 @@ public interface UserRepository {
     public User findUserById(Integer id);
     public User findUserByEmail(String email);
     public User editUser(User user);
-    public List<User> listAllUsers();
+    public List<User> allUsers();
 }

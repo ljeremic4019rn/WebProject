@@ -2,7 +2,9 @@ package rs.raf.models;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class Article {
 
@@ -19,6 +21,7 @@ public class Article {
     @NotEmpty(message = "date cant be empty")
     private Date date;
     private Integer visits;
+    private List<Tag> tags = new ArrayList<>();
 
     public Article() {
     }
@@ -31,6 +34,14 @@ public class Article {
         this.authorId = authorId;
         this.date = date;
         this.visits = visits;
+    }
+
+    public List<Tag> getTags() {
+        return tags;
+    }
+
+    public void setTags(List<Tag> tags) {
+        this.tags = tags;
     }
 
     public Integer getId() {

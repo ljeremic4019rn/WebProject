@@ -7,5 +7,6 @@ import java.util.List;
 
 public interface CommentRepository {
     public Comment addComment(Comment comment);
-    public List<Comment> getCommentsForArticle(Integer id);
+    public List<Comment> findCommentsForArticle(Integer id);
+    public List<Comment> allComments();
 }

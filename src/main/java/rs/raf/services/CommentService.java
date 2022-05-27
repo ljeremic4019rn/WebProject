@@ -3,7 +3,6 @@ package rs.raf.services;
 
 import rs.raf.models.Comment;
 import rs.raf.repositories.IRepos.CommentRepository;
-import rs.raf.repositories.SQLRepos.SqlCommentRepository;
 
 import javax.inject.Inject;
 import java.util.List;
@@ -17,8 +16,10 @@ public class CommentService {
         return commentRepository.addComment(comment);
     }
 
-    public List<Comment> getCommentsForArticle(Integer id) {
-        return commentRepository.getCommentsForArticle(id);
-    };
+    public List<Comment> findCommentsForArticle(Integer id) {
+        return commentRepository.findCommentsForArticle(id);
+    }
+
+    public List<Comment> allComments (){return commentRepository.allComments();}
 
 }
