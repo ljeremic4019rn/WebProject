@@ -4,6 +4,7 @@ import rs.raf.models.Article;
 import rs.raf.models.Comment;
 import rs.raf.services.ArticleService;
 import rs.raf.services.CommentService;
+import rs.raf.services.TagService;
 
 import javax.inject.Inject;
 import javax.validation.Valid;
@@ -19,6 +20,8 @@ public class ArticleResource {
     private ArticleService articleService;
     @Inject
     private CommentService commentService;
+    @Inject
+    private TagService tagService;
 
 //    @Context
 //    private ResourceContext resourceContext;
@@ -39,6 +42,7 @@ public class ArticleResource {
     -article tags ?? mozda nepotrebno
     recent X
     monthly X
+    -tags from post - proveri
      */
 
     @GET
@@ -92,7 +96,7 @@ public class ArticleResource {
         return Response.ok(this.articleService.findArticlesByCategory(id)).build();
     }
 
-        @GET
+    @GET
     @Path("/{id}")//(tag_id)
     @Produces(MediaType.APPLICATION_JSON)
 //    public List<Article> findArticlesByTag(@PathParam("id") Integer id) {
@@ -100,6 +104,13 @@ public class ArticleResource {
 //    }
     public Response findArticlesByTag (@PathParam("id") Integer id) {
         return Response.ok(this.articleService.findArticlesByTag(id)).build();
+    }
+
+    @GET
+    @Path("/{id}")//(article_id)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response findTagsForArticle (@PathParam("id") Integer id) {
+        return Response.ok(this.tagService.tagsForPost(id)).build();
     }
 
     @GET
