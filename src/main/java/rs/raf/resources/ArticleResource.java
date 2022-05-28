@@ -41,9 +41,11 @@ public class ArticleResource {
     -tags from post - proveri
      */
 
+    //todo broj poseta
+
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response all(){
+    public Response allArticles(){
         return Response.ok(this.articleService.allArticles()).build();
     }
 
@@ -56,19 +58,19 @@ public class ArticleResource {
 
     @POST
     @Produces(MediaType.APPLICATION_JSON)
-    public Article create(@Valid Article article) {
+    public Article createArticle(@Valid Article article) {
         return this.articleService.addArticle(article);
     }
 
     @DELETE
     @Path("/{id}")
-    public void delete(@PathParam("id") Integer id) {
+    public void deleteArticle(@PathParam("id") Integer id) {
         this.articleService.deleteArticle(id);
     }
 
     @PUT
     @Produces(MediaType.APPLICATION_JSON)
-    public Article update(@Valid Article article) {
+    public Article updateArticle(@Valid Article article) {
         return this.articleService.editArticle(article);
     }
 
@@ -101,12 +103,14 @@ public class ArticleResource {
     }
 
     @GET
+    @Path("/most_recent")//(article_id)
     @Produces(MediaType.APPLICATION_JSON)
     public Response findMostRecentArticles(){
         return Response.ok(this.articleService.findMostRecentArticles()).build();
     }
 
     @GET
+    @Path("/most_read")//(article_id)
     @Produces(MediaType.APPLICATION_JSON)
     public Response findMostReadMonthlyArticles(){
         return Response.ok(this.articleService.findMostReadArticlesMonthly()).build();

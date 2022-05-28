@@ -17,28 +17,28 @@ public class CmsUserResource {
 
     //todo mozda ovde premestiti find by email
 
-    @POST
+    @POST//radi
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public User addUser (User user){
         return this.userService.addUser(user);
     }
 
-    @PUT
+    @PUT//radi
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public User editUser (User user){
         return this.userService.editUser(user);
     }
 
-    @DELETE
+    @DELETE//radi
     @Path("/delete/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public void deleteUser(@PathParam("id") Integer id){
         this.userService.deleteUser(id);
     }
 
-    @PUT
+    @PUT//radi
     @Path("/activate/{id}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
@@ -46,7 +46,7 @@ public class CmsUserResource {
         this.userService.activateUser(id);
     }
 
-    @PUT
+    @PUT//radi
     @Path("/deactivate/{id}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)

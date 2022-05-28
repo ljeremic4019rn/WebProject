@@ -35,8 +35,9 @@ public class CmsArticleResource {
     }
 
     @DELETE
+    @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public void deleteArticle(Integer id){
+    public void deleteArticle(@PathParam("id") Integer id){
         this.articleService.deleteArticle(id);
     }
 

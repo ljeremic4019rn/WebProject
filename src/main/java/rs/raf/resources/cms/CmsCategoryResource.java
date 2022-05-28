@@ -13,23 +13,22 @@ public class CmsCategoryResource {
     @Inject
     private CategoryService categoryService;
 
-    @POST
+    @POST//radi
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Category addCategory (Category category){
         return this.categoryService.addCategory(category);
     }
 
-    @PUT
+    @PUT//radi
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Category updateCategory (Category category){
-        return this.updateCategory(category);
+        return this.categoryService.updateCategory(category);
     }
 
-    @DELETE
+    @DELETE//todo radi polovicno, brise ali treba raditi check za artikle
     @Path("/{id}")
-    @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public void deleteCategory(@PathParam("id") Integer id){
         this.categoryService.deleteCategory(id);

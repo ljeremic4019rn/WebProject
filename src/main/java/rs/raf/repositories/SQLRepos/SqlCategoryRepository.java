@@ -20,16 +20,16 @@ public class SqlCategoryRepository extends MySqlAbstractRepository implements Ca
 
         try {
             connection = this.newConnection();
-            preparedStatement = connection.prepareStatement("SELECT COUNT(*) FROM articles WHERE kategorija_id = ?");
-            preparedStatement.setInt(1, id);
-            resultSet = preparedStatement.executeQuery();
-            if (resultSet.next()) {
-                int br = resultSet.getInt(1);
-                if (br > 0) {
-                    throw new SQLException();
-                }
-            }
-            preparedStatement = connection.prepareStatement("DELETE FROM categories WHERE kategorija_id = ?");
+//            preparedStatement = connection.prepareStatement("SELECT COUNT(*) FROM articles WHERE kategorija_id = ?");
+//            preparedStatement.setInt(1, id);
+//            resultSet = preparedStatement.executeQuery();
+//            if (resultSet.next()) {
+//                int br = resultSet.getInt(1);
+//                if (br > 0) {
+//                    throw new SQLException();
+//                }
+//            }
+            preparedStatement = connection.prepareStatement("DELETE FROM categories WHERE id = ?");
             preparedStatement.setInt(1, id);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {

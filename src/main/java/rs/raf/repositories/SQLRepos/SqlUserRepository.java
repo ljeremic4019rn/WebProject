@@ -21,7 +21,7 @@ public class SqlUserRepository extends MySqlAbstractRepository implements UserRe
         try {
             connection = this.newConnection();
             preparedStatement = connection.prepareStatement(
-                    "INSERT INTO korisnik (email, ime, prezime, lozinka, tip, status) VALUES (?, ?, ?, ?, ?, ?)",Statement.RETURN_GENERATED_KEYS);
+                    "INSERT INTO users (email, name, lastname, password, role, status) VALUES (?, ?, ?, ?, ?, ?)",Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setString(1, user.getEmail());
             preparedStatement.setString(2, user.getName());
             preparedStatement.setString(3, user.getLastname());
@@ -55,7 +55,7 @@ public class SqlUserRepository extends MySqlAbstractRepository implements UserRe
 
         try {
             connection = this.newConnection();
-            preparedStatement = connection.prepareStatement("SELECT * FROM korisnik WHERE id LIKE ?");
+            preparedStatement = connection.prepareStatement("SELECT * FROM users WHERE id = ?");
             preparedStatement.setInt(1, id);
             resultSet = preparedStatement.executeQuery();
 
@@ -63,12 +63,12 @@ public class SqlUserRepository extends MySqlAbstractRepository implements UserRe
                 Integer userId = resultSet.getInt("id");
                 String email = resultSet.getString("email");
                 String name = resultSet.getString("name");
-                String surname = resultSet.getString("surname");
+                String lastname = resultSet.getString("lastname");
                 String role = resultSet.getString("role");
                 String status = resultSet.getString("status");
                 String password = resultSet.getString("password");
 
-                user = new User(userId, email, name, surname, role, status, password);
+                user = new User(userId, email, name, lastname, role, status, password);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -91,7 +91,7 @@ public class SqlUserRepository extends MySqlAbstractRepository implements UserRe
 
         try {
             connection = newConnection();
-            preparedStatement = connection.prepareStatement("SELECT * FROM user WHERE email = ?");
+            preparedStatement = connection.prepareStatement("SELECT * FROM users WHERE email = ?");
             preparedStatement.setString(1, email);
             resultSet = preparedStatement.executeQuery();
 
@@ -100,7 +100,7 @@ public class SqlUserRepository extends MySqlAbstractRepository implements UserRe
                 user.setId(resultSet.getInt("id"));
                 user.setEmail(resultSet.getString("email"));
                 user.setName(resultSet.getString("name"));
-                user.setLastname(resultSet.getString("surname"));
+                user.setLastname(resultSet.getString("lastname"));
                 user.setStatus(resultSet.getString("status"));
                 user.setRole(resultSet.getString("role"));
                 user.setPassword(resultSet.getString("password"));
@@ -123,7 +123,7 @@ public class SqlUserRepository extends MySqlAbstractRepository implements UserRe
 
         try {
             connection = this.newConnection();
-            preparedStatement = connection.prepareStatement("UPDATE users SET email = ?, ime = ?, prezime = ?, lozinka = ?, tip = ?, status = ? WHERE korisnik_id = ?");
+            preparedStatement = connection.prepareStatement("UPDATE users SET email = ?, name = ?, lastname = ?, password = ?, role = ?, status = ? WHERE id = ?");
             preparedStatement.setString(1, user.getEmail());
             preparedStatement.setString(2, user.getName());
             preparedStatement.setString(3, user.getLastname());
@@ -156,8 +156,14 @@ public class SqlUserRepository extends MySqlAbstractRepository implements UserRe
             resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()) {
-                users.add(new User(resultSet.getInt("id"), resultSet.getString("email"), resultSet.getString("name"), resultSet.getString("lastname"),
-                        resultSet.getString("role"), resultSet.getString("status"), resultSet.getString("password")));
+                users.add(new User(
+                        resultSet.getInt("id"),
+                        resultSet.getString("email"),
+                        resultSet.getString("name"),
+                        resultSet.getString("lastname"),
+                        resultSet.getString("role"),
+                        resultSet.getString("status"),
+                        resultSet.getString("password")));
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();

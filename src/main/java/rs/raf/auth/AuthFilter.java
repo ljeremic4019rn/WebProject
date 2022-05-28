@@ -14,12 +14,12 @@ import java.io.IOException;
 import java.util.List;
 
 @Provider
-public class AuthFilter implements ContainerRequestFilter {
+public class AuthFilter /*implements ContainerRequestFilter */{
 
     @Inject
     private UserService userService;
 
-    @Override
+//    @Override
     public void filter(ContainerRequestContext requestContext) throws IOException {
         if (!this.isAuthRequired(requestContext)) {
             return;

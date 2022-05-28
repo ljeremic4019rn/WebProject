@@ -58,7 +58,9 @@ public class SqlTagRepository extends MySqlAbstractRepository implements TagRepo
             resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()) {
-                tags.add(new Tag(resultSet.getInt("id"), resultSet.getString("name")));
+                tags.add(new Tag(
+                        resultSet.getInt("id"),
+                        resultSet.getString("name")));
             }
         } catch (SQLException e) {
             e.printStackTrace();

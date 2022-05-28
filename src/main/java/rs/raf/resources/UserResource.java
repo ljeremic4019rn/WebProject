@@ -6,6 +6,7 @@ import rs.raf.services.UserService;
 import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 @Path("/users")
 public class UserResource {
@@ -13,21 +14,28 @@ public class UserResource {
     @Inject
     private UserService userService;
 
-    @GET
+    @GET//radi
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response allUsers() {
+        return Response.ok(this.userService.allUsers()).build();
+    }
+
+
+    @GET//radi
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public User findUser(@PathParam("id") Integer userId){
         return this.userService.findUser(userId);
     }
 
-    @GET
-    @Path("/{email}")
+    @GET//radi
+    @Path("/email/{email}")
     @Produces(MediaType.APPLICATION_JSON)
     public User findUserByEmail(@PathParam("email") String email){
         return this.userService.findUserByEmail(email);
     }
 
-    //todo find user by email
+
 
     //todo login
 

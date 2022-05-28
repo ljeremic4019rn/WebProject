@@ -3,18 +3,9 @@ package rs.raf;
 import org.glassfish.hk2.utilities.binding.AbstractBinder;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.server.ServerProperties;
-import rs.raf.repositories.IRepos.ArticleRepository;
-import rs.raf.repositories.IRepos.CategoryRepository;
-import rs.raf.repositories.IRepos.CommentRepository;
-import rs.raf.repositories.IRepos.UserRepository;
-import rs.raf.repositories.SQLRepos.SqlArticleRepository;
-import rs.raf.repositories.SQLRepos.SqlCategoryRepository;
-import rs.raf.repositories.SQLRepos.SqlCommentRepository;
-import rs.raf.repositories.SQLRepos.SqlUserRepository;
-import rs.raf.services.ArticleService;
-import rs.raf.services.CategoryService;
-import rs.raf.services.CommentService;
-import rs.raf.services.UserService;
+import rs.raf.repositories.IRepos.*;
+import rs.raf.repositories.SQLRepos.*;
+import rs.raf.services.*;
 
 import javax.inject.Singleton;
 import javax.ws.rs.ApplicationPath;
@@ -32,14 +23,18 @@ public class MainApp extends ResourceConfig {
                 this.bind(SqlUserRepository.class).to(UserRepository.class).in(Singleton.class);
                 this.bind(SqlArticleRepository.class).to(ArticleRepository.class).in(Singleton.class);
                 this.bind(SqlCommentRepository.class).to(CommentRepository.class).in(Singleton.class);
+                this.bind(SqlTagRepository.class).to(TagRepository.class).in(Singleton.class);
+
+
                 this.bindAsContract(CategoryService.class);
                 this.bindAsContract(UserService.class);
                 this.bindAsContract(ArticleService.class);
                 this.bindAsContract(CommentService.class);
+                this.bindAsContract(TagService.class);
             }
         };
         register(binder);
 
-        packages("rs.raf");
+        packages("rs.raf.resources");
     }
 }

@@ -7,9 +7,9 @@ import javax.ws.rs.ext.Provider;
 import java.io.IOException;
 
 @Provider
-public class Cors implements ContainerResponseFilter {
+public class Cors /*implements ContainerResponseFilter*/ {
 
-    @Override
+//    @Override
     public void filter(ContainerRequestContext containerRequestContext, ContainerResponseContext containerResponseContext) throws IOException {
         containerResponseContext.getHeaders().add("Access-Control-Allow-Origin", "*");
         containerResponseContext.getHeaders().add("Access-Control-Allow-Credentials", "true");

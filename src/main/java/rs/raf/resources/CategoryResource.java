@@ -3,6 +3,7 @@ package rs.raf.resources;
 import org.glassfish.hk2.api.Immediate;
 import rs.raf.models.Category;
 import rs.raf.services.CategoryService;
+import rs.raf.services.TagService;
 
 import javax.inject.Inject;
 import javax.ws.rs.GET;
@@ -19,23 +20,24 @@ public class CategoryResource {
     @Inject
     private CategoryService categoryService;
 
-    @GET
+
+    @GET//radi
     @Produces(MediaType.APPLICATION_JSON)
-    public Response all() {
+    public Response allCategories() {
         return Response.ok(this.categoryService.allCategories()).build();
     }
 
-    @GET
+    @GET//radi
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Category find(@PathParam("id") Integer id) {
+    public Category findCategory(@PathParam("id") Integer id) {
         return this.categoryService.findCategory(id);
     }
 
-    @GET
-    @Path("/{name}")
+    @GET//radi
+    @Path("/name/{name}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Category findByName(@PathParam("name") String name) {
+    public Category findCategoryByName(@PathParam("name") String name) {
         return this.categoryService.findCategoryByName(name);
     }
 }
