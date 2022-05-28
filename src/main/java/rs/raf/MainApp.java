@@ -24,6 +24,7 @@ public class MainApp extends ResourceConfig {
                 this.bind(SqlArticleRepository.class).to(ArticleRepository.class).in(Singleton.class);
                 this.bind(SqlCommentRepository.class).to(CommentRepository.class).in(Singleton.class);
                 this.bind(SqlTagRepository.class).to(TagRepository.class).in(Singleton.class);
+                this.bind(SqlCommentRepository.class).to(CommentRepository.class).in(Singleton.class);
 
 
                 this.bindAsContract(CategoryService.class);
@@ -31,6 +32,7 @@ public class MainApp extends ResourceConfig {
                 this.bindAsContract(ArticleService.class);
                 this.bindAsContract(CommentService.class);
                 this.bindAsContract(TagService.class);
+                this.bindAsContract(CommentService.class);
             }
         };
         register(binder);
