@@ -1,6 +1,10 @@
 package rs.raf.services;
 
 
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.JWTVerifier;
+import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.interfaces.DecodedJWT;
 import rs.raf.models.User;
 import rs.raf.repositories.IRepos.UserRepository;
 
@@ -32,5 +36,30 @@ public class UserService {
         return userRepository.editUser(user);
     }
 
+    public void deleteUser(Integer id){
+        this.userRepository.deleteUser(id);
+    }
 
+    public void activateUser(Integer id){
+        this.userRepository.activateUser(id);
+    }
+
+    public void deactivateUser(Integer id){
+        this.userRepository.deactivateUser(id);
+    }
+
+
+    public boolean isAuthorized(String token) {
+        Algorithm algorithm = Algorithm.HMAC256("secret");
+        JWTVerifier verifier = JWT.require(algorithm).build();
+        DecodedJWT jwt = verifier.verify(token);
+        String email = jwt.getSubject();
+
+        User user = this.userRepository.findUserByEmail(email);
+        if (user == null) {
+            return false;
+        }
+
+        return true;
+    }
 }

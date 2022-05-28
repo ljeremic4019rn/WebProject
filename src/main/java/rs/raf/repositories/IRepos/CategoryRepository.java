@@ -11,5 +11,6 @@ public interface CategoryRepository {
     public Category addCategory(Category category);
     public Category updateCategory(Category category);
     public Category findCategory(Integer id);
+    public Category findCategoryByName(String name);
     public List<Category> allCategories();
 }

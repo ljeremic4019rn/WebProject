@@ -8,5 +8,5 @@ import java.util.List;
 public interface TagRepository {
     public Tag addTag(Tag tag);
     public List<Tag> allTags();
-    public List<Integer> tagsForPost(Integer id);
+    public List<Integer> tagsFromArticle(Integer id);
 }

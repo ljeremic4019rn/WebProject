@@ -13,28 +13,55 @@ public class SqlTagRepository extends MySqlAbstractRepository implements TagRepo
 
     @Override
     public Tag addTag(Tag tag) {
-        return null;
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        try {
+            connection = this.newConnection();
+
+            String[] generatedColumns = {"id"};
+
+            // todo: proveriti da li radi ovo bez ()
+            preparedStatement = connection.prepareStatement("INSERT INTO tags (name) VALUES(?)", generatedColumns);
+            preparedStatement.setString(1, tag.getName());
+            preparedStatement.executeUpdate();
+            resultSet = preparedStatement.getGeneratedKeys();
+
+            if (resultSet.next()) {
+                tag.setId(resultSet.getInt(1));
+            }
+
+            // String date = "01/05/2022"
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            this.closeStatement(preparedStatement);
+            this.closeResultSet(resultSet);
+            this.closeConnection(connection);
+        }
+
+        return tag;
     }
 
     @Override
     public List<Tag> allTags() {
-
         Connection connection = null;
-        Statement preparedStatement = null;
+        PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
 
         List<Tag> tags = new ArrayList<>();
 
         try {
             connection = newConnection();
-            preparedStatement = connection.createStatement();
-            resultSet = preparedStatement.executeQuery("SELECT * FROM tag");
+            preparedStatement = connection.prepareStatement("SELECT * FROM tags");
+            resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()) {
-                tags.add(new Tag(resultSet.getInt("id"), resultSet.getString("tag_name")));
+                tags.add(new Tag(resultSet.getInt("id"), resultSet.getString("name")));
             }
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
         } finally {
             closeStatement(preparedStatement);
             closeResultSet(resultSet);
@@ -45,7 +72,30 @@ public class SqlTagRepository extends MySqlAbstractRepository implements TagRepo
     }
 
     @Override
-    public List<Integer> tagsForPost(Integer id) {
-        return null;
+    public List<Integer> tagsFromArticle(Integer id) {
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+
+        List<Integer> tagIds = new ArrayList<>();
+
+        try {
+            connection = newConnection();
+            preparedStatement = connection.prepareStatement("SELECT id FROM tags_articles WHERE id = ?");
+            preparedStatement.setInt(1, id);
+            resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                tagIds.add(resultSet.getInt("id"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            closeStatement(preparedStatement);
+            closeResultSet(resultSet);
+            closeConnection(connection);
+        }
+
+        return tagIds;
     }
 }

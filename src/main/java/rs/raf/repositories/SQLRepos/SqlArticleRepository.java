@@ -9,7 +9,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 public class SqlArticleRepository extends MySqlAbstractRepository implements ArticleRepository {
@@ -17,7 +16,29 @@ public class SqlArticleRepository extends MySqlAbstractRepository implements Art
 
     @Override
     public void deleteArticle(Integer id) {
+    Connection connection = null;
+    PreparedStatement preparedStatement = null;
 
+        try {
+        connection = this.newConnection();
+        preparedStatement = connection.prepareStatement("DELETE FROM articles WHERE vest_id = ?");
+        preparedStatement.setInt(1, id);
+        preparedStatement.executeUpdate();
+
+        preparedStatement = connection.prepareStatement("DELETE FROM comments WHERE vest_id = ?");
+        preparedStatement.setInt(1, id);
+        preparedStatement.executeUpdate();
+
+        preparedStatement = connection.prepareStatement("DELETE FROM tag_article WHERE article_id = ?");
+        preparedStatement.setInt(1, id);
+        preparedStatement.executeUpdate();
+
+    } catch (SQLException e) {
+        e.printStackTrace();
+    } finally {
+        this.closeConnection(connection);
+        this.closeStatement(preparedStatement);
+    }
     }
 
     @Override

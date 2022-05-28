@@ -10,4 +10,7 @@ public interface UserRepository {
     public User findUserByEmail(String email);
     public User editUser(User user);
     public List<User> allUsers();
+    public void deleteUser(Integer id);
+    public void activateUser(Integer id);
+    public void deactivateUser(Integer id);
 }

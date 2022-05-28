@@ -20,6 +20,6 @@ public class CommentService {
         return commentRepository.findCommentsForArticle(id);
     }
 
-    public List<Comment> allComments (){return commentRepository.allComments();}
+//    public List<Comment> allComments (){return commentRepository.allComments();}
 
 }

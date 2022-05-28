@@ -20,6 +20,15 @@ public class UserResource {
         return this.userService.findUser(userId);
     }
 
+    @GET
+    @Path("/{email}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public User findUserByEmail(@PathParam("email") String email){
+        return this.userService.findUserByEmail(email);
+    }
+
+    //todo find user by email
+
     //todo login
 
     //    @POST

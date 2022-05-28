@@ -34,7 +34,7 @@ public class ArticleService {
 
     public List<Article> findArticlesPage(Integer page) {
         return articleRepository.findArticlesPage(page);
-    }
+    } //todo pogledaj kasnije
 
     public Integer findCount(Integer catId, Integer tagId) {
         return articleRepository.countArticles(catId, tagId);

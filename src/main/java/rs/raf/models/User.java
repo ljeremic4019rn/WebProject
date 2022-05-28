@@ -21,7 +21,7 @@ public class User {
     private String role;
     @NotNull(message = "status can't be null")
     @NotEmpty(message = "status cant be empty")
-    private String status;
+    private String status;                              //Active NotActive
     @NotNull(message = "password can't be null")
     @NotEmpty(message = "password cant be empty")
     private String password;

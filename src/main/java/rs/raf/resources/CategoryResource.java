@@ -11,9 +11,9 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.util.List;
 
-@Path("/category")
+
+@Path("/categories")
 public class CategoryResource {
 
     @Inject
@@ -30,5 +30,12 @@ public class CategoryResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Category find(@PathParam("id") Integer id) {
         return this.categoryService.findCategory(id);
+    }
+
+    @GET
+    @Path("/{name}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Category findByName(@PathParam("name") String name) {
+        return this.categoryService.findCategoryByName(name);
     }
 }

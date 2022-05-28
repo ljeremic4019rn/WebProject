@@ -1,7 +1,6 @@
 package rs.raf.resources;
 
 import rs.raf.models.Article;
-import rs.raf.models.Comment;
 import rs.raf.services.ArticleService;
 import rs.raf.services.CommentService;
 import rs.raf.services.TagService;
@@ -11,7 +10,6 @@ import javax.validation.Valid;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.util.List;
 
 @Path("/articles")
 public class ArticleResource {
@@ -25,8 +23,6 @@ public class ArticleResource {
 
 //    @Context
 //    private ResourceContext resourceContext;
-
-
 
     /*
     all X
@@ -54,7 +50,7 @@ public class ArticleResource {
     @GET
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Article find(@PathParam("id") Integer id) {
+    public Article findArticle(@PathParam("id") Integer id) {
         return this.articleService.findArticle(id);
     }
 
@@ -79,38 +75,29 @@ public class ArticleResource {
     @GET
     @Path("/{id}/comments")
     @Produces(MediaType.APPLICATION_JSON)
-//    public List<Comment> articleComments (@PathParam("id") Integer id){
-//        return this.commentService.findCommentsForArticle(id);
-//    }
     public Response articleComments (@PathParam("id") Integer id) {
         return Response.ok(this.commentService.findCommentsForArticle(id)).build();
     }
 
     @GET
-    @Path("/{id}")//(category_id)
+    @Path("/category/{id}")//(category_id)
     @Produces(MediaType.APPLICATION_JSON)
-//    public List<Article> findArticlesByCategory(@PathParam("id") Integer id) {
-//        return this.articleService.findArticlesByCategory(id);
-//    }
     public Response findArticlesByCategory(@PathParam("id") Integer id) {
         return Response.ok(this.articleService.findArticlesByCategory(id)).build();
     }
 
     @GET
-    @Path("/{id}")//(tag_id)
+    @Path("/tag/{id}")//(tag_id)
     @Produces(MediaType.APPLICATION_JSON)
-//    public List<Article> findArticlesByTag(@PathParam("id") Integer id) {
-//        return this.articleService.findArticlesByTag(id);
-//    }
     public Response findArticlesByTag (@PathParam("id") Integer id) {
         return Response.ok(this.articleService.findArticlesByTag(id)).build();
     }
 
     @GET
-    @Path("/{id}")//(article_id)
+    @Path("/{id}/tags")//(article_id)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response findTagsForArticle (@PathParam("id") Integer id) {
-        return Response.ok(this.tagService.tagsForPost(id)).build();
+    public Response findArticleTags(@PathParam("id") Integer id) {
+        return Response.ok(this.tagService.tagsFromArticle(id)).build();
     }
 
     @GET
@@ -124,7 +111,4 @@ public class ArticleResource {
     public Response findMostReadMonthlyArticles(){
         return Response.ok(this.articleService.findMostReadArticlesMonthly()).build();
     }
-
-
-
 }
