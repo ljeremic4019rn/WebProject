@@ -21,28 +21,6 @@ public class ArticleResource {
     @Inject
     private TagService tagService;
 
-//    @Context
-//    private ResourceContext resourceContext;
-
-    /*
-    all X
-    find one X
-    create X
-    edit X
-    delete X
-    comments X
-    -count ?? nepotrebno
-    -find page ?? nepotrebno
-    by category X
-    by tag X
-    -article tags ?? mozda nepotrebno
-    recent X
-    monthly X
-    -tags from post - proveri
-     */
-
-    //todo broj poseta
-
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response allArticles(){
@@ -62,17 +40,17 @@ public class ArticleResource {
         return this.articleService.addArticle(article);
     }
 
-    @DELETE
-    @Path("/{id}")
-    public void deleteArticle(@PathParam("id") Integer id) {
-        this.articleService.deleteArticle(id);
-    }
+//    @DELETE todo mozda ovde ostaviti jer user brise svoj artikal
+//    @Path("/{id}")
+//    public void deleteArticle(@PathParam("id") Integer id) {
+//        this.articleService.deleteArticle(id);
+//    }
 
-    @PUT
-    @Produces(MediaType.APPLICATION_JSON)
-    public Article updateArticle(@Valid Article article) {
-        return this.articleService.editArticle(article);
-    }
+//    @PUT
+//    @Produces(MediaType.APPLICATION_JSON)
+//    public Article updateArticle(@Valid Article article) {
+//        return this.articleService.editArticle(article);
+//    }
 
     @GET
     @Path("/{id}/comments")

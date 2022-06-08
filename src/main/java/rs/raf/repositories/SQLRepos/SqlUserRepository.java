@@ -26,7 +26,7 @@ public class SqlUserRepository extends MySqlAbstractRepository implements UserRe
             preparedStatement.setString(2, user.getName());
             preparedStatement.setString(3, user.getLastname());
             preparedStatement.setString(4, user.getPassword());
-            preparedStatement.setString(5, user.getRole().toString());
+            preparedStatement.setString(5, user.getRole());
             preparedStatement.setString(6, user.getStatus());
             preparedStatement.executeUpdate();
             resultSet = preparedStatement.getGeneratedKeys();

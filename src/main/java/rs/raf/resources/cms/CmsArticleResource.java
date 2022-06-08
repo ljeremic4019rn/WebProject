@@ -5,6 +5,7 @@ import rs.raf.services.ArticleService;
 import rs.raf.services.CommentService;
 
 import javax.inject.Inject;
+import javax.validation.Valid;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 
@@ -16,10 +17,6 @@ public class CmsArticleResource {
     @Inject
     private CommentService commentService;
 
-
-    //todo mozda trebas da dodas find
-    //todo mozda treba da se uradi addTag ako ne moze preko edit
-
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
@@ -28,16 +25,14 @@ public class CmsArticleResource {
     }
 
     @PUT
-    @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Article editArticle(Article article){
+    public Article updateArticle(@Valid Article article) {
         return this.articleService.editArticle(article);
     }
 
     @DELETE
     @Path("/{id}")
-    @Produces(MediaType.APPLICATION_JSON)
-    public void deleteArticle(@PathParam("id") Integer id){
+    public void deleteArticle(@PathParam("id") Integer id) {
         this.articleService.deleteArticle(id);
     }
 
