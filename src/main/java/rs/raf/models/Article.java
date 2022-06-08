@@ -17,8 +17,7 @@ public class Article {
     @NotEmpty(message = "content cant be empty")
     private String content;
     private Integer authorId;
-    @NotNull(message = "date can't be null")
-    @NotEmpty(message = "date cant be empty")
+
     private Date date;
     private Integer visits;
     private List<Tag> tags = new ArrayList<>();
@@ -99,4 +98,20 @@ public class Article {
     public void setVisits(Integer visits) {
         this.visits = visits;
     }
+
+
+    @Override
+    public String toString() {
+        return "Article{" +
+                "id=" + id +
+                ", categoryId=" + categoryId +
+                ", title='" + title + '\'' +
+                ", content='" + content + '\'' +
+                ", authorId=" + authorId +
+                ", date=" + date +
+                ", visits=" + visits +
+                ", tags=" + tags +
+                '}';
+    }
+
 }

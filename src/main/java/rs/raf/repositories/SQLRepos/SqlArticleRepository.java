@@ -5,10 +5,7 @@ import rs.raf.models.Article;
 import rs.raf.repositories.IRepos.ArticleRepository;
 import rs.raf.repositories.MySqlAbstractRepository;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,19 +41,99 @@ public class SqlArticleRepository extends MySqlAbstractRepository implements Art
 
     @Override
     public Article addArticle(Article article) {
-        return null;
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+
+        try {
+            connection = newConnection();
+
+//            String[] generatedColumns = {"id"};
+
+            preparedStatement = connection.prepareStatement("INSERT INTO articles (categoryId, title, content, authorId, publishedDate, visits) VALUES (?, ?, ?, ?, CURRENT_TIMESTAMP(), 0)", Statement.RETURN_GENERATED_KEYS);
+            preparedStatement.setInt(1, article.getCategoryId());
+            preparedStatement.setString(2, article.getTitle());
+            preparedStatement.setString(3, article.getContent());
+            preparedStatement.setInt(4, article.getAuthorId());
+            //preparedStatement.setString(5, category.getName()); TODO: proveriti date i visits
+            preparedStatement.executeUpdate();
+            resultSet = preparedStatement.getGeneratedKeys();
+
+            if (resultSet.next()) {
+                article.setId(resultSet.getInt(1));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            closeStatement(preparedStatement);
+            closeResultSet(resultSet);
+            closeConnection(connection);
+        }
+
+        return article;
     }
 
     @Override
     public Article editArticle(Article article) {
-        return null;
+        System.out.println("ARTIKAL");
+        System.out.println(article.toString());
+
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+
+        try {
+            connection = this.newConnection();
+            preparedStatement = connection.prepareStatement(
+                    "UPDATE articles SET categoryId = ?, title = ?, content = ?, authorId = ?, visits = ? WHERE id = ?");
+            preparedStatement.setInt(1, article.getCategoryId());
+            preparedStatement.setString(2, article.getTitle());
+            preparedStatement.setString(3, article.getContent());
+            preparedStatement.setInt(4, article.getAuthorId());
+            preparedStatement.setInt(5, article.getVisits());
+            preparedStatement.setInt(6, article.getId());
+
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            this.closeStatement(preparedStatement);
+            this.closeConnection(connection);
+        }
+
+        return article;
     }
 
     @Override
     public Article findArticle(Integer id) {
-        return null;
-    }
 
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+
+        Article article = null;
+        try {
+            connection = this.newConnection();
+            preparedStatement = connection.prepareStatement("SELECT * FROM articles WHERE id = ?");
+            preparedStatement.setInt(1, id);
+            resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                article = new Article(
+                        resultSet.getInt("id"),
+                        resultSet.getInt("categoryId"),
+                        resultSet.getString("title"),
+                        resultSet.getString("content"),
+                        resultSet.getInt("authorId"),
+                        resultSet.getDate("publishedDate"),
+                        resultSet.getInt("visits"));
+
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return article;
+    }
     @Override
     public Integer countArticles(Integer catId, Integer tagId) {
         return null;
@@ -73,7 +150,7 @@ public class SqlArticleRepository extends MySqlAbstractRepository implements Art
 
         try {
             connection = this.newConnection();
-            preparedStatement = connection.prepareStatement("SELECT * FROM articles ORDER BY vreme_kreiranja DESC");
+            preparedStatement = connection.prepareStatement("SELECT * FROM articles");
             resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 Article article = new Article(
@@ -82,7 +159,7 @@ public class SqlArticleRepository extends MySqlAbstractRepository implements Art
                         resultSet.getString("title"),
                         resultSet.getString("content"),
                         resultSet.getInt("authorId"),
-                        resultSet.getDate("date"),
+                        resultSet.getDate("publishedDate"),
                         resultSet.getInt("visits"));
                 articles.add(article);
             }
@@ -114,7 +191,35 @@ public class SqlArticleRepository extends MySqlAbstractRepository implements Art
 
     @Override
     public List<Article> findMostRecentArticles() {
-        return null;
+        List<Article> articles = new ArrayList<>();
+
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+
+        try {
+            connection = this.newConnection();
+            preparedStatement = connection.prepareStatement("SELECT * FROM articles ORDER BY publishedDate DESC");
+            resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                Article article = new Article(
+                        resultSet.getInt("id"),
+                        resultSet.getInt("categoryId"),
+                        resultSet.getString("title"),
+                        resultSet.getString("content"),
+                        resultSet.getInt("authorId"),
+                        resultSet.getDate("publishedDate"),
+                        resultSet.getInt("visits"));
+                articles.add(article);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            this.closeStatement(preparedStatement);
+            this.closeResultSet(resultSet);
+            this.closeConnection(connection);
+        }
+        return articles;
     }
 
     @Override
