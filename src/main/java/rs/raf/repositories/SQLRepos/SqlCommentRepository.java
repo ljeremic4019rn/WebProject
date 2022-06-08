@@ -21,9 +21,9 @@ public class SqlCommentRepository extends MySqlAbstractRepository implements Com
 
             String[] generatedColumns = {"id"};
 
-            preparedStatement = connection.prepareStatement("INSERT INTO comments (postId, authorName, content, date) VALUES(?, ?, ?, CURRENT_TIMESTAMP())",
+            preparedStatement = connection.prepareStatement("INSERT INTO comments (articleId, authorName, content, date) VALUES(?, ?, ?, CURRENT_TIMESTAMP())",
                     Statement.RETURN_GENERATED_KEYS);
-            preparedStatement.setInt(1, comment.getPostId());
+            preparedStatement.setInt(1, comment.getArticleId());
             preparedStatement.setString(2, comment.getContent());
             preparedStatement.setString(3, comment.getAuthorName());
 
@@ -55,14 +55,14 @@ public class SqlCommentRepository extends MySqlAbstractRepository implements Com
 
         try {
             connection = this.newConnection();
-            preparedStatement = connection.prepareStatement("SELECT * FROM comments WHERE postId = ? ORDER BY date DESC");
+            preparedStatement = connection.prepareStatement("SELECT * FROM comments WHERE articleId = ? ORDER BY date DESC");
             preparedStatement.setInt(1, id);
             resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()) {
                 comments.add(new Comment(
                         resultSet.getInt("id"),
-                        resultSet.getInt("postId"),
+                        resultSet.getInt("articleId"),
                         resultSet.getString("authorName"),
                         resultSet.getString("content"),
                         resultSet.getDate("date")));

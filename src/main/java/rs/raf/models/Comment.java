@@ -7,7 +7,7 @@ import java.util.Date;
 public class Comment {
 
     private Integer id;
-    private Integer postId;
+    private Integer articleId;
     @NotNull(message = "author can't be null")
     @NotEmpty(message = "author cant be empty")
     private String authorName;
@@ -21,9 +21,9 @@ public class Comment {
     public Comment() {
     }
 
-    public Comment(Integer id, Integer postId, String authorName, String content, Date date) {
+    public Comment(Integer id, Integer articleId, String authorName, String content, Date date) {
         this.id = id;
-        this.postId = postId;
+        this.articleId = articleId;
         this.authorName = authorName;
         this.content = content;
         this.date = date;
@@ -37,12 +37,12 @@ public class Comment {
         this.id = id;
     }
 
-    public Integer getPostId() {
-        return postId;
+    public Integer getArticleId() {
+        return articleId;
     }
 
-    public void setPostId(Integer postId) {
-        this.postId = postId;
+    public void setArticleId(Integer articleId) {
+        this.articleId = articleId;
     }
 
     public String getAuthorName() {

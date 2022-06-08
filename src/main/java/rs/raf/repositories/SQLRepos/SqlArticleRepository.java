@@ -19,15 +19,15 @@ public class SqlArticleRepository extends MySqlAbstractRepository implements Art
 
         try {
             connection = this.newConnection();
-            preparedStatement = connection.prepareStatement("DELETE FROM articles WHERE vest_id = ?");
+            preparedStatement = connection.prepareStatement("DELETE FROM articles WHERE id = ?");
             preparedStatement.setInt(1, id);
             preparedStatement.executeUpdate();
 
-            preparedStatement = connection.prepareStatement("DELETE FROM comments WHERE vest_id = ?");
+            preparedStatement = connection.prepareStatement("DELETE FROM comments WHERE articleId = ?");//todo ako nema komentara da li puca
             preparedStatement.setInt(1, id);
             preparedStatement.executeUpdate();
 
-            preparedStatement = connection.prepareStatement("DELETE FROM tag_article WHERE article_id = ?");
+            preparedStatement = connection.prepareStatement("DELETE FROM tags_articles WHERE articleId = ?");
             preparedStatement.setInt(1, id);
             preparedStatement.executeUpdate();
 
