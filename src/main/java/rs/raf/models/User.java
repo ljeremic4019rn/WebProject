@@ -1,6 +1,8 @@
 package rs.raf.models;
 
 
+import org.apache.commons.codec.digest.DigestUtils;
+
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
@@ -37,6 +39,10 @@ public class User {
         this.role = role;
         this.status = status;
         this.password = password;
+    }
+
+    public String getPassHash() {
+        return DigestUtils.sha256Hex(this.password);
     }
 
     public Integer getId() {
@@ -94,4 +100,6 @@ public class User {
     public void setPassword(String password) {
         this.password = password;
     }
+
+
 }

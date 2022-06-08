@@ -14,7 +14,7 @@ import java.io.IOException;
 import java.util.List;
 
 @Provider
-public class AuthFilter /*implements ContainerRequestFilter */{
+public class AuthFilter implements ContainerRequestFilter {
 
     @Inject
     private UserService userService;
@@ -46,7 +46,8 @@ public class AuthFilter /*implements ContainerRequestFilter */{
 
         List<Object> matchedResources = req.getUriInfo().getMatchedResources();
         for (Object matchedResource : matchedResources) {
-            if (matchedResource instanceof CmsCategoryResource || matchedResource instanceof CmsUserResource || matchedResource instanceof CmsArticleResource) {
+            if (matchedResource instanceof CmsCategoryResource || matchedResource instanceof CmsUserResource ||
+                    matchedResource instanceof CmsArticleResource) {
                 return true;
             }
         }

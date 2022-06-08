@@ -7,7 +7,7 @@ import javax.ws.rs.ext.Provider;
 import java.io.IOException;
 
 @Provider
-public class Cors /*implements ContainerResponseFilter*/ {
+public class Cors implements ContainerResponseFilter {
 
 //    @Override
     public void filter(ContainerRequestContext containerRequestContext, ContainerResponseContext containerResponseContext) throws IOException {

@@ -5,10 +5,12 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import org.apache.commons.codec.digest.DigestUtils;
 import rs.raf.models.User;
 import rs.raf.repositories.IRepos.UserRepository;
 
 import javax.inject.Inject;
+import java.util.Date;
 import java.util.List;
 
 public class UserService {
@@ -46,6 +48,31 @@ public class UserService {
 
     public void deactivateUser(Integer id){
         this.userRepository.deactivateUser(id);
+    }
+
+    public String login (String email, String password) {
+        String hashedPassword = DigestUtils.sha256Hex(password);
+
+        User user = this.userRepository.findUserByEmail(email);
+        if(user == null || !user.getPassHash().equals(hashedPassword)) {
+            return null;
+        }
+
+        Date issuedAt = new Date();
+        Date expiresAt = new Date(issuedAt.getTime() + 24*60*60*1000);
+
+        Algorithm algorithm = Algorithm.HMAC256("secret");
+
+        return JWT.create()
+                .withIssuedAt(issuedAt)
+                .withExpiresAt(expiresAt)
+                .withSubject(email)
+                .withClaim("id", user.getId())
+                .withClaim("name", user.getName())
+                .withClaim("lastname", user.getLastname())
+                .withClaim("role", user.getRole().toString())
+                .withClaim("status", user.getStatus().toString())
+                .sign(algorithm);
     }
 
 
