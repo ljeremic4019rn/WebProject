@@ -100,4 +100,31 @@ public class SqlTagRepository extends MySqlAbstractRepository implements TagRepo
 
         return tagIds;
     }
+
+    @Override
+    public void addTagsArticles(Integer tagId, Integer articleId) {
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        try {
+            connection = this.newConnection();
+
+            String[] generatedColumns = {"id"};
+
+            preparedStatement = connection.prepareStatement("INSERT INTO tags_articles (articleId, tagId) VALUES(?,?)", generatedColumns);
+            preparedStatement.setInt(1, articleId);
+            preparedStatement.setInt(2, tagId);
+            preparedStatement.executeUpdate();
+            resultSet = preparedStatement.getGeneratedKeys();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            this.closeStatement(preparedStatement);
+            this.closeResultSet(resultSet);
+            this.closeConnection(connection);
+        }
+
+
+    }
 }

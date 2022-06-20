@@ -9,4 +9,5 @@ public interface TagRepository {
     public Tag addTag(Tag tag);
     public List<Tag> allTags();
     public List<Integer> tagsFromArticle(Integer id);
+    public void addTagsArticles (Integer tagId, Integer articleId);
 }

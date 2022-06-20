@@ -50,7 +50,9 @@ public class SqlArticleRepository extends MySqlAbstractRepository implements Art
 
 //            String[] generatedColumns = {"id"};
 
-            preparedStatement = connection.prepareStatement("INSERT INTO articles (categoryId, title, content, authorId, publishedDate, visits) VALUES (?, ?, ?, ?, CURRENT_TIMESTAMP(), 0)", Statement.RETURN_GENERATED_KEYS);
+            preparedStatement = connection.prepareStatement("INSERT INTO articles (" +
+                    "categoryId, title, content, authorId, publishedDate, visits) VALUES (?, ?, ?, ?, CURRENT_TIMESTAMP(), 0)",
+                    Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setInt(1, article.getCategoryId());
             preparedStatement.setString(2, article.getTitle());
             preparedStatement.setString(3, article.getContent());
@@ -134,6 +136,7 @@ public class SqlArticleRepository extends MySqlAbstractRepository implements Art
 
         return article;
     }
+
     @Override
     public Integer countArticles(Integer catId, Integer tagId) {
         return null;
