@@ -34,5 +34,4 @@ public class TagResource {
     public void addTagsArticles(@PathParam("tagId") Integer tagId, @PathParam("articleId") Integer articleId) {
         this.tagService.addTagsArticles(tagId, articleId);
     }
-
 }

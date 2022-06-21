@@ -153,7 +153,7 @@ public class SqlArticleRepository extends MySqlAbstractRepository implements Art
 
         try {
             connection = this.newConnection();
-            preparedStatement = connection.prepareStatement("SELECT * FROM articles");
+            preparedStatement = connection.prepareStatement("SELECT * FROM articles ORDER BY publishedDate ASC");
             resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 Article article = new Article(
@@ -184,7 +184,38 @@ public class SqlArticleRepository extends MySqlAbstractRepository implements Art
 
     @Override
     public List<Article> findArticlesByCategory(Integer categoryId) {
-        return null;
+        List<Article> articles = new ArrayList<>();
+
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+
+        try {
+            connection = this.newConnection();
+            preparedStatement = connection.prepareStatement("SELECT * FROM articles  WHERE categoryId = ? ORDER BY publishedDate ASC");
+            preparedStatement.setInt(1, categoryId);
+            resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                Article article = new Article(
+                        resultSet.getInt("id"),
+                        resultSet.getInt("categoryId"),
+                        resultSet.getString("title"),
+                        resultSet.getString("content"),
+                        resultSet.getInt("authorId"),
+                        resultSet.getDate("publishedDate"),
+                        resultSet.getInt("visits"));
+                articles.add(article);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            this.closeStatement(preparedStatement);
+            this.closeResultSet(resultSet);
+            this.closeConnection(connection);
+        }
+
+        return articles;
     }
 
     @Override

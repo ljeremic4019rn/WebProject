@@ -51,7 +51,8 @@ public class SqlCategoryRepository extends MySqlAbstractRepository implements Ca
 
 //            String[] generatedColumns = {"id"};
 
-            preparedStatement = connection.prepareStatement("INSERT INTO categories (name, description) VALUES (?, ?)", Statement.RETURN_GENERATED_KEYS);
+            preparedStatement = connection.prepareStatement("INSERT INTO categories (name, description) VALUES (?, ?)",
+                    Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setString(1, category.getName());
             preparedStatement.setString(2, category.getDescription());
             preparedStatement.executeUpdate();

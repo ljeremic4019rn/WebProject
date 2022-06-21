@@ -25,7 +25,7 @@ public class TagService {
         tagRepository.addTagsArticles(tagId, articleId);
     }
 
-    public List<Integer> tagsFromArticle(Integer id) {
+    public List<String> tagsFromArticle(Integer id) {
         return tagRepository.tagsFromArticle(id);
     }
 
