@@ -220,7 +220,41 @@ public class SqlArticleRepository extends MySqlAbstractRepository implements Art
 
     @Override
     public List<Article> findArticlesByTag(Integer tagId) {
-        return null;
+        System.out.println("USLI ");
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+
+        List<Article> articles = new ArrayList<>();
+
+        try {
+            connection = newConnection();
+            preparedStatement = connection.prepareStatement(
+                    "SELECT * FROM articles ar INNER JOIN tags_articles ta on ar.id = ta.articleId " +
+                            "WHERE ta.tagId = ? ORDER BY ar.publishedDate DESC");// LIMIT 5 OFFSET ?
+            preparedStatement.setInt(1, tagId);
+            resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                Article toAdd = new Article();
+                toAdd.setId(resultSet.getInt("id"));
+                toAdd.setCategoryId(resultSet.getInt("categoryId"));
+                toAdd.setAuthorId(resultSet.getInt("authorId"));
+                toAdd.setVisits(resultSet.getInt("visits"));
+                toAdd.setDate(resultSet.getDate("publishedDate"));
+                toAdd.setContent(resultSet.getString("content"));
+                toAdd.setTitle(resultSet.getString("title"));
+
+                articles.add(toAdd);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            closeStatement(preparedStatement);
+            closeResultSet(resultSet);
+            closeConnection(connection);
+        }
+        return articles;
     }
 
     @Override
@@ -258,6 +292,39 @@ public class SqlArticleRepository extends MySqlAbstractRepository implements Art
 
     @Override
     public List<Article> findMostReadMonthlyArticles() {
-        return null;
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+
+        List<Article> articles = new ArrayList<>();
+
+        try {
+            connection = newConnection();
+            preparedStatement = connection.prepareStatement(
+                    "SELECT * FROM articles WHERE publishedDate BETWEEN DATE_SUB(NOW(), INTERVAL 30 DAY) AND NOW() ORDER BY visits DESC "
+            );//todo LIMIT 10
+            resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                Article toAdd = new Article();
+                toAdd.setId(resultSet.getInt("id"));
+                toAdd.setCategoryId(resultSet.getInt("categoryId"));
+                toAdd.setAuthorId(resultSet.getInt("authorId"));
+                toAdd.setVisits(resultSet.getInt("visits"));
+                toAdd.setDate(resultSet.getDate("publishedDate"));
+                toAdd.setContent(resultSet.getString("content"));
+                toAdd.setTitle(resultSet.getString("title"));
+
+                articles.add(toAdd);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            closeStatement(preparedStatement);
+            closeResultSet(resultSet);
+            closeConnection(connection);
+        }
+
+        return articles;
     }
 }

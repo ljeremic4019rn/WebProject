@@ -83,13 +83,13 @@ public class SqlTagRepository extends MySqlAbstractRepository implements TagRepo
     }
 
     @Override
-    public List<String> tagsFromArticle(Integer articleId) {
+    public List<Tag> tagsFromArticle(Integer articleId) {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
 
         List<Integer> tagIds = new ArrayList<>();
-        List<String> tagNames = new ArrayList<>();
+        List<Tag> tags = new ArrayList<>();
 
         try {
             connection = newConnection();
@@ -108,7 +108,10 @@ public class SqlTagRepository extends MySqlAbstractRepository implements TagRepo
                 resultSet = preparedStatement.executeQuery();
 
                 while (resultSet.next()) {
-                    tagNames.add(resultSet.getString("name"));
+                    tags.add(new Tag(
+                            resultSet.getInt("id"),
+                            resultSet.getString("name")
+                    ));
                 }
             }
         } catch (SQLException e) {
@@ -118,7 +121,7 @@ public class SqlTagRepository extends MySqlAbstractRepository implements TagRepo
             closeResultSet(resultSet);
             closeConnection(connection);
         }
-        return tagNames;
+        return tags;
     }
 
     @Override

@@ -69,8 +69,8 @@ public class ArticleResource {
     @GET
     @Path("/tag/{id}")//(tag_id)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response findArticlesByTag (@PathParam("id") Integer id) {
-        return Response.ok(this.articleService.findArticlesByTag(id)).build();
+    public Response findArticlesByTag (@PathParam("id") Integer tagId) {
+        return Response.ok(this.articleService.findArticlesByTag(tagId)).build();
     }
 
     @GET
@@ -81,14 +81,14 @@ public class ArticleResource {
     }
 
     @GET
-    @Path("/most_recent")//(article_id)
+    @Path("/mostRecent")//(article_id)
     @Produces(MediaType.APPLICATION_JSON)
     public Response findMostRecentArticles(){
         return Response.ok(this.articleService.findMostRecentArticles()).build();
     }
 
     @GET
-    @Path("/most_read")//(article_id)
+    @Path("/mostRead")//(article_id)
     @Produces(MediaType.APPLICATION_JSON)
     public Response findMostReadMonthlyArticles(){
         return Response.ok(this.articleService.findMostReadArticlesMonthly()).build();
