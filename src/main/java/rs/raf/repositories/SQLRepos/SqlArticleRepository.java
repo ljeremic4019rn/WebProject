@@ -153,7 +153,7 @@ public class SqlArticleRepository extends MySqlAbstractRepository implements Art
         try {
             connection = this.newConnection();
 
-            preparedStatement = connection.prepareStatement("SELECT * FROM articles ORDER BY publishedDate ASC");
+            preparedStatement = connection.prepareStatement("SELECT * FROM articles ORDER BY publishedDate DESC");
             resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 Article article = new Article(
