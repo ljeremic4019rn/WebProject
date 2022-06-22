@@ -20,7 +20,6 @@ public class Article {
 
     private Date date;
     private Integer visits;
-    private List<Tag> tags = new ArrayList<>();
 
     public Article() {
     }
@@ -33,14 +32,6 @@ public class Article {
         this.authorId = authorId;
         this.date = date;
         this.visits = visits;
-    }
-
-    public List<Tag> getTags() {
-        return tags;
-    }
-
-    public void setTags(List<Tag> tags) {
-        this.tags = tags;
     }
 
     public Integer getId() {
@@ -110,7 +101,6 @@ public class Article {
                 ", authorId=" + authorId +
                 ", date=" + date +
                 ", visits=" + visits +
-                ", tags=" + tags +
                 '}';
     }
 

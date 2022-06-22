@@ -1,6 +1,7 @@
 package rs.raf.repositories.SQLRepos;
 
 
+import rs.raf.models.Article;
 import rs.raf.models.Tag;
 import rs.raf.repositories.IRepos.TagRepository;
 import rs.raf.repositories.MySqlAbstractRepository;
@@ -13,25 +14,33 @@ public class SqlTagRepository extends MySqlAbstractRepository implements TagRepo
 
     @Override
     public Tag addTag(Tag tag) {
+
+        List<Tag> tags = new ArrayList<>();
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
+
         try {
+            String[] generatedColumns = {"id"};
             connection = this.newConnection();
 
-            String[] generatedColumns = {"id"};
+            preparedStatement = connection.prepareStatement("SELECT * FROM tags WHERE name = ?");
+            preparedStatement.setString(1, tag.getName());
+            resultSet = preparedStatement.executeQuery();
 
-            // todo: proveriti da li radi ovo bez ()
+            while (resultSet.next()) {
+                tag.setId(resultSet.getInt("id"));
+                return tag;
+            }
+
             preparedStatement = connection.prepareStatement("INSERT INTO tags (name) VALUES(?)", generatedColumns);
             preparedStatement.setString(1, tag.getName());
             preparedStatement.executeUpdate();
             resultSet = preparedStatement.getGeneratedKeys();
 
-            if (resultSet.next()) {
-                tag.setId(resultSet.getInt(1));
-            }
+            if (resultSet.next()) tag.setId(resultSet.getInt(1));
 
-            // String date = "01/05/2022"
+//         String date = "01/05/2022"
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -122,6 +131,15 @@ public class SqlTagRepository extends MySqlAbstractRepository implements TagRepo
 
             String[] generatedColumns = {"id"};
 
+            preparedStatement = connection.prepareStatement("SELECT * FROM tags_articles WHERE tagId = ? AND articleId = ?");
+            preparedStatement.setInt(1, tagId);
+            preparedStatement.setInt(2, articleId);
+            resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                return;
+            }
+
             preparedStatement = connection.prepareStatement("INSERT INTO tags_articles (articleId, tagId) VALUES(?,?)", generatedColumns);
             preparedStatement.setInt(1, articleId);
             preparedStatement.setInt(2, tagId);
@@ -136,4 +154,5 @@ public class SqlTagRepository extends MySqlAbstractRepository implements TagRepo
             this.closeConnection(connection);
         }
     }
+
 }
