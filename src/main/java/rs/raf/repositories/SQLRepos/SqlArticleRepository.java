@@ -301,7 +301,7 @@ public class SqlArticleRepository extends MySqlAbstractRepository implements Art
         try {
             connection = newConnection();
             preparedStatement = connection.prepareStatement(
-                    "SELECT * FROM articles WHERE publishedDate BETWEEN DATE_SUB(NOW(), INTERVAL 30 DAY) AND NOW() ORDER BY visits DESC "
+                    "SELECT * FROM articles WHERE publishedDate BETWEEN DATE_SUB(NOW(), INTERVAL 30 DAY) AND NOW()  ORDER BY visits DESC LIMIT 10"
             );//todo LIMIT 10
             resultSet = preparedStatement.executeQuery();
 
