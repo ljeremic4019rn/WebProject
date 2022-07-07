@@ -35,22 +35,17 @@ public class ArticleResource {
     }
 
     @POST
+    @Path("/visit/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public void increaseVisits(@PathParam("id") Integer id) {
+        this.articleService.increaseVisits(id);
+    }
+
+    @POST
     @Produces(MediaType.APPLICATION_JSON)
     public Article createArticle(@Valid Article article) {
         return this.articleService.addArticle(article);
     }
-
-//    @DELETE todo mozda ovde ostaviti jer user brise svoj artikal
-//    @Path("/{id}")
-//    public void deleteArticle(@PathParam("id") Integer id) {
-//        this.articleService.deleteArticle(id);
-//    }
-
-//    @PUT
-//    @Produces(MediaType.APPLICATION_JSON)
-//    public Article updateArticle(@Valid Article article) {
-//        return this.articleService.editArticle(article);
-//    }
 
     @GET
     @Path("/{id}/comments")

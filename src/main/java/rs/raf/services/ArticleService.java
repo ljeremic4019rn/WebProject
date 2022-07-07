@@ -24,9 +24,18 @@ public class ArticleService {
         return articleRepository.findArticle(id);
     }
 
+    public List<Article> searchArticle(String search) {
+        return articleRepository.searchArticle(search);
+    }
+
     public void deleteArticle(Integer id) {
          articleRepository.deleteArticle(id);
     }
+
+    public void increaseVisits(Integer id) {
+        articleRepository.increaseVisits(id);
+    }
+
 
     public Article editArticle(Article article) {
         return articleRepository.editArticle(article);

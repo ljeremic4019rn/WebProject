@@ -327,4 +327,67 @@ public class SqlArticleRepository extends MySqlAbstractRepository implements Art
 
         return articles;
     }
+
+    @Override
+    public List<Article> searchArticle(String search) {
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+
+        List<Article> articles = new ArrayList<>();
+
+        String searchQuote = "%" + search + "%";
+
+
+        try {
+            connection = newConnection();
+            preparedStatement = connection.prepareStatement(
+                    "SELECT * FROM articles WHERE title LIKE  ? OR content LIKE ? ");
+            preparedStatement.setString(1, searchQuote);
+            preparedStatement.setString(2, searchQuote);
+
+
+            resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                Article toAdd = new Article();
+                toAdd.setId(resultSet.getInt("id"));
+                toAdd.setCategoryId(resultSet.getInt("categoryId"));
+                toAdd.setAuthorId(resultSet.getInt("authorId"));
+                toAdd.setVisits(resultSet.getInt("visits"));
+                toAdd.setDate(resultSet.getDate("publishedDate"));
+                toAdd.setContent(resultSet.getString("content"));
+                toAdd.setTitle(resultSet.getString("title"));
+
+                articles.add(toAdd);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            closeStatement(preparedStatement);
+            closeResultSet(resultSet);
+            closeConnection(connection);
+        }
+        return articles;
+    }
+
+    @Override
+    public void increaseVisits(Integer articleId) {
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+
+        try {
+            connection = this.newConnection();
+            preparedStatement = connection.prepareStatement("UPDATE articles SET visits = visits + 1 WHERE id = ?");
+            preparedStatement.setInt(1, articleId);
+
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            this.closeStatement(preparedStatement);
+            this.closeConnection(connection);
+        }
+    }
+
 }

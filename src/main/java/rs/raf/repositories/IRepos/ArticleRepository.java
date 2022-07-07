@@ -17,4 +17,6 @@ public interface ArticleRepository {
     public List<Article> findArticlesByTag(Integer tagId);
     public List<Article> findMostRecentArticles();
     public List<Article> findMostReadMonthlyArticles();
+    public List<Article> searchArticle(String search);
+    public void increaseVisits (Integer articleId);
 }

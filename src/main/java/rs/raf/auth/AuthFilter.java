@@ -4,7 +4,6 @@ import rs.raf.resources.cms.CmsArticleResource;
 import rs.raf.resources.cms.CmsCategoryResource;
 import rs.raf.resources.cms.CmsUserResource;
 import rs.raf.services.UserService;
-
 import javax.inject.Inject;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerRequestFilter;
@@ -19,8 +18,9 @@ public class AuthFilter implements ContainerRequestFilter {
     @Inject
     private UserService userService;
 
-//    @Override
-    public void filter(ContainerRequestContext requestContext) throws IOException {
+    @Override
+    public void filter(ContainerRequestContext requestContext) {
+
         if (!this.isAuthRequired(requestContext)) {
             return;
         }
@@ -43,6 +43,7 @@ public class AuthFilter implements ContainerRequestFilter {
         if (req.getUriInfo().getPath().contains("login")) {
             return false;
         }
+        System.out.println("is author required");
 
         List<Object> matchedResources = req.getUriInfo().getMatchedResources();
         for (Object matchedResource : matchedResources) {

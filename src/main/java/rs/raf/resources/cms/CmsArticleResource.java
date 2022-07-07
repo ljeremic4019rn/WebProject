@@ -8,6 +8,7 @@ import javax.inject.Inject;
 import javax.validation.Valid;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import java.util.List;
 
 @Path("/cms_articles")
 public class CmsArticleResource {
@@ -34,6 +35,13 @@ public class CmsArticleResource {
     @Path("/{id}")
     public void deleteArticle(@PathParam("id") Integer id) {
         this.articleService.deleteArticle(id);
+    }
+
+    @GET
+    @Path("/search/{search}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<Article> searchArticle(@PathParam("search") String search){
+        return this.articleService.searchArticle(search);
     }
 
 }
