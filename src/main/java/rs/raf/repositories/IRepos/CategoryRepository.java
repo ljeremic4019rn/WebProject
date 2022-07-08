@@ -13,4 +13,5 @@ public interface CategoryRepository {
     public Category findCategory(Integer id);
     public Category findCategoryByName(String name);
     public List<Category> allCategories();
+    public List<Category> categoriesByPage(Integer pageNum);
 }

@@ -10,6 +10,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Path("/users")
@@ -37,6 +38,13 @@ public class UserResource {
     @Produces(MediaType.APPLICATION_JSON)
     public User findUserByEmail(@PathParam("email") String email){
         return this.userService.findUserByEmail(email);
+    }
+
+    @GET//radi
+    @Path("/page/{num}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<User> findUserByEmail(@PathParam("num") Integer num){
+        return this.userService.usersByPage(num);
     }
 
 

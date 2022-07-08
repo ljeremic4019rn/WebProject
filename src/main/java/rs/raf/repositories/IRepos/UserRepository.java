@@ -13,4 +13,5 @@ public interface UserRepository {
     public void deleteUser(Integer id);
     public void activateUser(Integer id);
     public void deactivateUser(Integer id);
+    public List<User> usersByPage(Integer pageNum);
 }

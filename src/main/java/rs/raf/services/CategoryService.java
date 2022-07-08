@@ -36,4 +36,8 @@ public class CategoryService {
         return categoryRepository.findCategoryByName(name);
     }
 
+    public List<Category> categoriesByPage(Integer pageNum) {
+        return categoryRepository.categoriesByPage(pageNum);
+    }
+
 }

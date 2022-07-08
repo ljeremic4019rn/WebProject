@@ -34,6 +34,11 @@ public class UserService {
         return userRepository.allUsers();
     }
 
+    public List<User> usersByPage(Integer pageNum) {
+        return userRepository.usersByPage(pageNum);
+    }
+
+
     public User editUser(User user) {
         return userRepository.editUser(user);
     }

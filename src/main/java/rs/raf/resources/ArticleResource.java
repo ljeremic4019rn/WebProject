@@ -10,6 +10,7 @@ import javax.validation.Valid;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.List;
 
 @Path("/articles")
 public class ArticleResource {
@@ -25,6 +26,15 @@ public class ArticleResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response allArticles(){
         return Response.ok(this.articleService.allArticles()).build();
+    }
+
+
+
+    @GET
+    @Path("/page/{num}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<Article> articlesByPage (@PathParam("num") Integer num) {
+        return articleService.articlesByPage(num);
     }
 
     @GET
@@ -59,6 +69,13 @@ public class ArticleResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response findArticlesByCategory(@PathParam("id") Integer id) {
         return Response.ok(this.articleService.findArticlesByCategory(id)).build();
+    }
+
+    @GET
+    @Path("/category/{id}/{num}")//(category_id)
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<Article> artByCatByPage(@PathParam("id") Integer id, @PathParam("num") Integer num) {
+        return articleService.artByCatByPage(id,num);
     }
 
     @GET

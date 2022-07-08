@@ -12,6 +12,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.List;
 
 
 @Path("/categories")
@@ -25,6 +26,13 @@ public class CategoryResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response allCategories() {
         return Response.ok(this.categoryService.allCategories()).build();
+    }
+
+    @GET//radi
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("page/{num}")
+    public List<Category> categoriesByPage(@PathParam("num") Integer num) {
+        return this.categoryService.categoriesByPage(num);
     }
 
     @GET//radi

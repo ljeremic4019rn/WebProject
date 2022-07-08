@@ -302,7 +302,7 @@ public class SqlArticleRepository extends MySqlAbstractRepository implements Art
             connection = newConnection();
             preparedStatement = connection.prepareStatement(
                     "SELECT * FROM articles WHERE publishedDate BETWEEN DATE_SUB(NOW(), INTERVAL 30 DAY) AND NOW()  ORDER BY visits DESC LIMIT 10"
-            );//todo LIMIT 10
+            );
             resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()) {
@@ -388,6 +388,81 @@ public class SqlArticleRepository extends MySqlAbstractRepository implements Art
             this.closeStatement(preparedStatement);
             this.closeConnection(connection);
         }
+    }
+
+    @Override
+    public List<Article> articlesByPage(Integer pageNum) {
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+
+        List<Article> articles = new ArrayList<>();
+
+        try {
+            connection = newConnection();
+
+            preparedStatement = connection.prepareStatement("SELECT * FROM articles ORDER BY publishedDate DESC LIMIT 5 OFFSET ?");
+            preparedStatement.setInt(1, (pageNum - 1) * 5);
+
+            resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                Article article = new Article(
+                        resultSet.getInt("id"),
+                        resultSet.getInt("categoryId"),
+                        resultSet.getString("title"),
+                        resultSet.getString("content"),
+                        resultSet.getInt("authorId"),
+                        resultSet.getDate("publishedDate"),
+                        resultSet.getInt("visits"));
+                articles.add(article);
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        } finally {
+            closeStatement(preparedStatement);
+            closeResultSet(resultSet);
+            closeConnection(connection);
+        }
+
+        return articles;
+    }
+
+    @Override
+    public List<Article> arByCatByPage(Integer categoryId, Integer pageNum) {
+        List<Article> articles = new ArrayList<>();
+
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+
+        try {
+            connection = this.newConnection();
+            preparedStatement = connection.prepareStatement("SELECT * FROM articles  WHERE categoryId = ? ORDER BY publishedDate ASC LIMIT 5 OFFSET ?");
+            preparedStatement.setInt(1, categoryId);
+            preparedStatement.setInt(2, (pageNum - 1) * 5);
+            resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                Article article = new Article(
+                        resultSet.getInt("id"),
+                        resultSet.getInt("categoryId"),
+                        resultSet.getString("title"),
+                        resultSet.getString("content"),
+                        resultSet.getInt("authorId"),
+                        resultSet.getDate("publishedDate"),
+                        resultSet.getInt("visits"));
+                articles.add(article);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            this.closeStatement(preparedStatement);
+            this.closeResultSet(resultSet);
+            this.closeConnection(connection);
+        }
+
+        return articles;
     }
 
 }

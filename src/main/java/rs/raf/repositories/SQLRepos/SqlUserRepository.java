@@ -231,4 +231,38 @@ public class SqlUserRepository extends MySqlAbstractRepository implements UserRe
             this.closeConnection(connection);
         }
     }
+
+    @Override
+    public List<User> usersByPage(Integer pageNum) {
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+
+        List<User> users = new ArrayList<>();
+
+        try {
+            connection = newConnection();
+            preparedStatement = connection.prepareStatement("SELECT * FROM users LIMIT 5 OFFSET ?");
+            preparedStatement.setInt(1, (pageNum - 1) * 5);
+            resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                users.add(new User(
+                        resultSet.getInt("id"),
+                        resultSet.getString("email"),
+                        resultSet.getString("name"),
+                        resultSet.getString("lastname"),
+                        resultSet.getString("role"),
+                        resultSet.getString("status"),
+                        resultSet.getString("password")));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            closeStatement(preparedStatement);
+            closeResultSet(resultSet);
+            closeConnection(connection);
+        }
+
+        return users;    }
 }

@@ -20,15 +20,7 @@ public class SqlCategoryRepository extends MySqlAbstractRepository implements Ca
 
         try {
             connection = this.newConnection();
-//            preparedStatement = connection.prepareStatement("SELECT COUNT(*) FROM articles WHERE kategorija_id = ?");
-//            preparedStatement.setInt(1, id);
-//            resultSet = preparedStatement.executeQuery();
-//            if (resultSet.next()) {
-//                int br = resultSet.getInt(1);
-//                if (br > 0) {
-//                    throw new SQLException();
-//                }
-//            }
+
             preparedStatement = connection.prepareStatement("DELETE FROM categories WHERE id = ?");
             preparedStatement.setInt(1, id);
             preparedStatement.executeUpdate();
@@ -177,5 +169,39 @@ public class SqlCategoryRepository extends MySqlAbstractRepository implements Ca
         }
 
         return categories;
+    }
+
+    @Override
+    public List<Category> categoriesByPage(Integer pageNum) {
+
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+
+        List<Category> categories = new ArrayList<>();
+
+        try {
+            connection = newConnection();
+            preparedStatement = connection.prepareStatement("SELECT * FROM categories LIMIT 5 OFFSET ?");
+            preparedStatement.setInt(1, (pageNum - 1) * 5);
+            resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                Category category = new Category(
+                        resultSet.getInt("id"),
+                        resultSet.getString("name"),
+                        resultSet.getString("description"));
+                categories.add(category);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            closeStatement(preparedStatement);
+            closeResultSet(resultSet);
+            closeConnection(connection);
+        }
+
+        return categories;
+
     }
 }

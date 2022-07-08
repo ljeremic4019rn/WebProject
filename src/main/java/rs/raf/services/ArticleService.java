@@ -20,6 +20,10 @@ public class ArticleService {
         return articleRepository.allArticles();
     }
 
+    public List<Article> articlesByPage(Integer pageNum){
+        return articleRepository.articlesByPage(pageNum);
+    }
+
     public Article findArticle(Integer id) {
         return articleRepository.findArticle(id);
     }
@@ -36,6 +40,9 @@ public class ArticleService {
         articleRepository.increaseVisits(id);
     }
 
+    public List<Article> artByCatByPage (Integer categoryId, Integer pageNum){
+        return articleRepository.arByCatByPage(categoryId, pageNum);
+    }
 
     public Article editArticle(Article article) {
         return articleRepository.editArticle(article);

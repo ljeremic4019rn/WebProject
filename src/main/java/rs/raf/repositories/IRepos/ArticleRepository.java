@@ -19,4 +19,6 @@ public interface ArticleRepository {
     public List<Article> findMostReadMonthlyArticles();
     public List<Article> searchArticle(String search);
     public void increaseVisits (Integer articleId);
+    public List<Article> articlesByPage(Integer pageNum);
+    public List<Article> arByCatByPage(Integer categoryId, Integer pageNum);
 }
