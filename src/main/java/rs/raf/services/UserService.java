@@ -55,11 +55,13 @@ public class UserService {
         this.userRepository.deactivateUser(id);
     }
 
-    public String login (String email, String password) {
+
+    public String login(String email, String password) {
+
         String hashedPassword = DigestUtils.sha256Hex(password);
 
         User user = this.userRepository.findUserByEmail(email);
-        if(user == null || !user.getPassHash().equals(hashedPassword)) {
+        if(user == null || !user.getPassword().equals(hashedPassword)) {
             return null;
         }
 

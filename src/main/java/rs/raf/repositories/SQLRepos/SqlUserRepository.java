@@ -18,6 +18,9 @@ public class SqlUserRepository extends MySqlAbstractRepository implements UserRe
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
 
+        String hashedPassword = DigestUtils.sha256Hex(user.getPassword());
+
+
         try {
             connection = this.newConnection();
             preparedStatement = connection.prepareStatement(
@@ -25,7 +28,7 @@ public class SqlUserRepository extends MySqlAbstractRepository implements UserRe
             preparedStatement.setString(1, user.getEmail());
             preparedStatement.setString(2, user.getName());
             preparedStatement.setString(3, user.getLastname());
-            preparedStatement.setString(4, user.getPassword());
+            preparedStatement.setString(4, hashedPassword);
             preparedStatement.setString(5, user.getRole());
             preparedStatement.setString(6, user.getStatus());
             preparedStatement.executeUpdate();
